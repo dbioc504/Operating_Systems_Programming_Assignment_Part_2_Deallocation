@@ -218,7 +218,12 @@ public class Main
                 // emd of non-null next node
                 }
 
-                //
+                // if deallocated node is isolated at the beginning or the end
+                if (deallocateNode.getData().address > freeList.getLast().getData().address) {
+                    freeList.insertAtEnd(deallocateNode);
+                } else if (deallocateNode.getData().address < freeList.getHead().getData().address) {
+                    freeList.insertAtBegin(deallocateNode);
+                }
 
 
             }
@@ -271,9 +276,16 @@ public class Main
 
             } else if (isolate) {
 
-            //
+                // place block into free list and remove from busylist
+                freeList.insert(deallocateNode.getData(), position);
+                busyList.remove(busyList.getPosition(deallocateNode.getData()));
 
             }
+
+            // end of while loop
+
+
+
         }
 
 
@@ -330,6 +342,9 @@ public class Main
         ListNode freeNode2 = new ListNode(freeBlock2);
 //        freeList.insertAtEnd(freeNode1);
         freeList.insertAtEnd(freeNode2);
+        Block busyBlock = new Block(16000, 300, true);
+        ListNode busyNode = new ListNode(busyBlock);
+        busyList.insertAtEnd(busyNode);
 
 
         //Insert blocks into busy list
